@@ -4,6 +4,8 @@ import json
 import logging
 import os
 import time
+import urllib
+import webbrowser
 
 import requests
 
@@ -15,7 +17,7 @@ log = logging.getLogger(__name__)
 
 class RedirectServer(object):
     IP = '127.0.0.1'
-    PORT = 18189
+    PORT = 8189
     URL = 'http://localhost:{}/auth_code'.format(PORT)
     def __init__(self):
         self.result = None
@@ -114,9 +116,10 @@ class FitbitAuth(object):
                 access_token = self.get_access_token()
 
         now = int(time.time())
-        if now > access_token['time'] + access_token['expires_in'] - 30:
-            log.info('Access token is expired')
-            access_token = self.get_access_token_refresh(access_token['refresh_token'])
+        print(access_token)
+        # if now > access_token['time'] + access_token['expires_in'] - 30:
+        #     log.info('Access token is expired')
+        #     access_token = self.get_access_token_refresh(access_token['refresh_token'])
 
         if self.access_token is not access_token:
             access_token['time'] = now
@@ -125,4 +128,3 @@ class FitbitAuth(object):
             self.access_token = access_token
 
         return access_token['access_token']
-
